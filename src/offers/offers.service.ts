@@ -14,20 +14,4 @@ export class OffersService {
     const newOffer = this.offersRepository.create(offer);
     return this.offersRepository.save(newOffer);
   }
-
-  findOne(query: Partial<Offer>) {
-    return this.offersRepository.findOne({ where: query });
-  }
-
-  findMany(query: Partial<Offer>) {
-    return this.offersRepository.find({ where: query });
-  }
-
-  updateOne(query: Partial<Offer>, update: Partial<Offer>) {
-    return this.offersRepository.update(query, update);
-  }
-
-  removeOne(query: Partial<Offer>) {
-    return this.offersRepository.delete(query);
-  }
 }

@@ -16,6 +16,18 @@ export class WishlistsService {
     private wishlistRepository: Repository<Wishlist>,
   ) {}
 
+  async findAll() {
+    const wishlists = await this.wishlistRepository.find({
+      relations: ['owner', 'items'],
+    });
+
+    if (!wishlists) {
+      throw new NotFoundException('Списки желаний не найдены');
+    }
+
+    return wishlists;
+  }
+
   create(wishlist: Partial<Wishlist>) {
     const newWishlist = this.wishlistRepository.create(wishlist);
     return this.wishlistRepository.save(newWishlist);
@@ -26,10 +38,6 @@ export class WishlistsService {
       where: query,
       relations: ['owner', 'items'],
     });
-  }
-
-  findMany(query: Partial<Wishlist>) {
-    return this.wishlistRepository.find({ where: query });
   }
 
   updateOne(query: Partial<Wishlist>, update: Partial<Wishlist>) {

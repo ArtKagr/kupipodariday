@@ -23,6 +23,11 @@ import { JwtGuard } from '../auth/guards/jwt-auth.guard';
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
 
+  @Get()
+  async getAll() {
+    return await this.wishlistsService.findAll();
+  }
+
   @Post()
   create(@Req() req: Request, @Body() body: CreateWishlistDto) {
     return this.wishlistsService.create({ ...body, owner: req.user as User });

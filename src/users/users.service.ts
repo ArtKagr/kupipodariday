@@ -19,16 +19,16 @@ export class UsersService {
     return this.usersRepository.findOne({ where: query });
   }
 
+  findBy(query: Partial<User>) {
+    return this.usersRepository.findOneBy(query);
+  }
+
   async findMany(query: FindOptionsWhere<User>[]) {
     return this.usersRepository.find({ where: query });
   }
 
   updateOne(query: Partial<User>, update: Partial<User>) {
     return this.usersRepository.update(query, update);
-  }
-
-  removeOne(query: Partial<User>) {
-    return this.usersRepository.delete(query);
   }
 
   async getWishes(query: Partial<User>) {

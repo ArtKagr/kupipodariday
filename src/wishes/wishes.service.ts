@@ -19,10 +19,6 @@ export class WishesService {
     return this.wishesRepository.findOne({ where: query });
   }
 
-  findMany(query: Partial<Wish>) {
-    return this.wishesRepository.find({ where: query });
-  }
-
   updateOne(query: Partial<Wish>, update: Partial<Wish>) {
     return this.wishesRepository.update(query, update);
   }
@@ -66,7 +62,6 @@ export class WishesService {
       { copied: wish.copied + 1 },
     );
 
-    // Копируем желание
     const copiedWish = this.wishesRepository.create({
       name: wish.name,
       link: wish.link,
