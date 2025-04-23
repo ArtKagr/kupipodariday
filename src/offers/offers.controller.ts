@@ -11,9 +11,7 @@ export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
   @Post()
-  create(@Body() offerData: CreateOfferDto, @Req() req: Request) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+  create(@Body() offerData: CreateOfferDto, @Req() req) {
     const userId = (req.user as User)['id'];
     return this.offersService.create({
       amount: offerData.amount,

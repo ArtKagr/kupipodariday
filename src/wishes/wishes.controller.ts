@@ -9,7 +9,7 @@ import {
   UseGuards,
   Req,
   ForbiddenException,
-  NotFoundException,
+  NotFoundException, UseInterceptors,
 } from '@nestjs/common';
 import { WishesService } from './wishes.service';
 import { CreateWishDto } from './dto/create-wish.dto';
@@ -17,6 +17,7 @@ import { UpdateWishDto } from './dto/update-wish.dto';
 import { Request } from 'express';
 import { User } from '../users/entities/user.entity';
 import { JwtGuard } from '../auth/guards/jwt-auth.guard';
+import { OwnerPasswordInterceptor } from '../interceptors/password.owner.interceptor';
 
 @Controller('wishes')
 export class WishesController {
@@ -38,6 +39,7 @@ export class WishesController {
     return this.wishesService.findTop();
   }
 
+  @UseInterceptors(OwnerPasswordInterceptor)
   @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {

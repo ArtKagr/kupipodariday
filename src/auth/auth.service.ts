@@ -37,8 +37,8 @@ export class AuthService {
       password: hashedPassword,
     });
     const payload = { username: user.username, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    this.jwtService.sign(payload);
+    const { password, ...restData } = user;
+    return restData;
   }
 }

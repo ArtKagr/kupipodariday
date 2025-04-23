@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOptionsWhere } from 'typeorm';
+import { Repository, FindOptionsWhere, QueryFailedError } from 'typeorm';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -11,8 +11,14 @@ export class UsersService {
   ) {}
 
   create(user: Partial<User>) {
-    const newUser = this.usersRepository.create(user);
-    return this.usersRepository.save(newUser);
+    try {
+      const newUser = this.usersRepository.create(user);
+      return this.usersRepository.save(newUser);
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new ConflictException('Пользователь с таким email или username уже зарегистрирован');
+      }
+    }
   }
 
   findOne(query: Partial<User>) {
@@ -21,10 +27,6 @@ export class UsersService {
 
   findBy(query: Partial<User>) {
     return this.usersRepository.findOneBy(query);
-  }
-
-  async findMany(query: FindOptionsWhere<User>[]) {
-    return this.usersRepository.find({ where: query });
   }
 
   updateOne(query: Partial<User>, update: Partial<User>) {
